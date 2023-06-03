@@ -148,6 +148,34 @@ mutation RevokeToken {
 
 ```
 
+## Pagination
+
+```bash
+query GetAllMovies {
+  allMovies(first:1 after: "YXJyYXljb25uZWN0aW9uOjE=") {
+    pageInfo{
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        title
+        year
+        director {
+          name
+          surname
+        }
+      }
+    }
+  }
+}
+
+```
+
 ## Contributing
 
 Contributions to this project are welcome. If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request. Please make sure to follow the code of conduct.
