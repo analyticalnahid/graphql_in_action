@@ -11,6 +11,7 @@ The client-side structure includes queries and mutations for various operations.
 - [Queries](#queries)
 - [Mutation](#mutations)
 - [Pagination](#pagination)
+- [Introspection Schema](#introspection schema)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -176,6 +177,8 @@ query GetAllMovies {
 }
 
 ```
+
+## Introspection Schema
 
 ## Contributing
 
