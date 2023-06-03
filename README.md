@@ -10,6 +10,7 @@ The client-side structure includes queries and mutations for various operations.
 
 - [Queries](#queries)
 - [Mutation](#mutations)
+- [Pagination](#pagination)
 - [Contributing](#contributing)
 - [License](#license)
 
