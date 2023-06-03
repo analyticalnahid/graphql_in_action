@@ -9,9 +9,9 @@ The client-side structure includes queries and mutations for various operations.
 ## Table of Contents
 
 - [Queries](#queries)
-- [Mutation](#mutations)
+- [Mutation](#mutation)
 - [Pagination](#pagination)
-- [Introspection Schema](#introspection schema)
+- [Introspection Schema](#introspectionschema)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -179,6 +179,15 @@ query GetAllMovies {
 ```
 
 ## Introspection Schema
+```bash
+./manage.py --out schema.json
+```
+GRAPHENE = {
+    'SCHEMA': 'tutorial.quickstart.schema',
+    'SCHEMA_OUTPUT': 'data/schema.json',  # defaults to schema.json,
+    'SCHEMA_INDENT': 2,  # Defaults to None (displays all data on a single line)
+}
+
 
 ## Contributing
 
