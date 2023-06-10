@@ -1,0 +1,118 @@
+import graphene
+from django.contrib.auth import get_user_model
+from ..query import UserType
+from ...serializers.registration import UserRegistrationSerializer, VerifyAccountSerializer
+from base.helper import send_otp_via_email, generate_otp
+
+User = get_user_model()
+
+
+class UserRegistrationInput(graphene.InputObjectType):
+    email = graphene.String(required=True)
+    password = graphene.String(required=True)
+
+
+class UserRegistrationMutation(graphene.Mutation):
+    class Arguments:
+        input_data = UserRegistrationInput(required=True)
+
+    message = graphene.String()
+    status = graphene.Int()
+    user = graphene.Field(lambda: UserType)
+
+    @staticmethod
+    def mutate(root, info, input_data):
+        try:
+            email = input_data.email
+
+            existing_user = User.objects.filter(email=email).first()
+            if existing_user:
+                return UserRegistrationMutation(
+                    message='User already exists',
+                    status=400,
+                    user=None,
+                )
+
+            serializer = UserRegistrationSerializer(data=input_data)
+            if serializer.is_valid():
+                user = serializer.save()
+                email = serializer.data['email']
+                otp = generate_otp()
+                send_otp_via_email(email, otp)
+                return UserRegistrationMutation(
+                    message='Registration Successful. Check your email for OTP.',
+                    status=200,
+                    user=user,
+                )
+            else:
+                return UserRegistrationMutation(
+                    message='Registration Failed',
+                    status=400,
+                    user=None,
+                )
+        except Exception as e:
+            print(e)
+            return UserRegistrationMutation(
+                message='Internal Server Error',
+                status=500,
+                user=None,
+            )
+
+
+class VerifyAccountInput(graphene.InputObjectType):
+    email = graphene.String(required=True)
+    otp = graphene.String(required=True)
+
+
+class VerifyOTPMutation(graphene.Mutation):
+    class Arguments:
+        input_data = VerifyAccountInput(required=True)
+
+    message = graphene.String()
+    status = graphene.Int()
+
+    @staticmethod
+    def mutate(root, info, input_data):
+        try:
+            serializer = VerifyAccountSerializer(data=input_data)
+            if serializer.is_valid():
+                email = serializer.validated_data['email']
+                otp = serializer.validated_data['otp']
+                User = get_user_model()
+                user = User.objects.filter(email=email).first()
+
+                if user:
+                    if user.is_verified:
+                        return VerifyOTPMutation(
+                            message='User already verified',
+                            status=400,
+                        )
+                    elif user.otp == otp:
+                        user.is_verified = True
+                        user.otp = None
+                        user.save()
+                        return VerifyOTPMutation(
+                            message='OTP Verified',
+                            status=200,
+                        )
+                    else:
+                        return VerifyOTPMutation(
+                            message='Wrong OTP',
+                            status=400,
+                        )
+                else:
+                    return VerifyOTPMutation(
+                        message='User not found',
+                        status=404,
+                    )
+            else:
+                return VerifyOTPMutation(
+                    message='Validation error',
+                    status=400,
+                )
+        except Exception as e:
+            print(e)
+            return VerifyOTPMutation(
+                message='Internal Server Error',
+                status=500,
+            )

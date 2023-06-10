@@ -1,0 +1,79 @@
+query GetAllUsers {
+  allUsers {
+    id
+    email
+    firstName
+    lastName
+    isVerified
+  }
+}
+
+query GetSingleUser {
+  user(id: 1) {
+    id
+    email
+    isVerified
+  }
+}
+
+mutation RegisterUser {
+  registerUser(
+    inputData: {email: "uwohpckni@internetkeno.com", password: "nahid123@"}
+  ) {
+    user {
+      id
+      email
+    }
+    status
+    message
+  }
+}
+
+mutation VerifyAccount {
+  verifyOtp(inputData: {email: "uwohpckni@internetkeno.com", otp: "374666"}) {
+    status
+    message
+  }
+}
+
+mutation LoginUser {
+  loginUser(
+    inputData: {email: "uwohpckni@internetkeno.com", password: "nahid123"}
+  ) {
+    token
+    status
+    message
+  }
+}
+
+mutation ForgetPassword {
+  forgetPass(inputData: {email: "programsurface@gmail.com"}) {
+    status
+    message
+  }
+}
+
+mutation ResetPassword {
+  resetPass(
+    inputData: {token: "79b35297a9185314bd2827d33aca0add", newPassword: "program123@"}
+  ) {
+    status
+    message
+  }
+}
+
+mutation UpdatePassword {
+  changePassword(
+    inputData: {currentPassword: "program123@#", newPassword: "nahid123@"}
+  ) {
+    status
+    message
+  }
+}
+
+mutation RemoveUser {
+  deleteUser(inputData: {password:"nahid123@"}){
+    status
+    message
+  }
+}
