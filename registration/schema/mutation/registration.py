@@ -1,8 +1,10 @@
 import graphene
 from django.contrib.auth import get_user_model
 from ..query import UserType
+from graphql import GraphQLError
 from ...serializers.registration import UserRegistrationSerializer, VerifyAccountSerializer
-from base.helper import send_otp_via_email, generate_otp
+from base.helper.mail_otp import send_otp_via_email, generate_otp
+from base.helper.validation import get_error_details
 
 User = get_user_model()
 
@@ -36,7 +38,7 @@ class UserRegistrationMutation(graphene.Mutation):
             serializer = UserRegistrationSerializer(data=input_data)
             if serializer.is_valid():
                 user = serializer.save()
-                email = serializer.data['email']
+                email = serializer.validated_data['email']
                 otp = generate_otp()
                 send_otp_via_email(email, otp)
                 return UserRegistrationMutation(
@@ -45,11 +47,13 @@ class UserRegistrationMutation(graphene.Mutation):
                     user=user,
                 )
             else:
+                error_details = get_error_details(serializer)
                 return UserRegistrationMutation(
-                    message='Registration Failed',
-                    status=400,
+                    message=error_details[0]['message'],
+                    status=500,
                     user=None,
                 )
+
         except Exception as e:
             print(e)
             return UserRegistrationMutation(
@@ -106,9 +110,10 @@ class VerifyOTPMutation(graphene.Mutation):
                         status=404,
                     )
             else:
+                error_details = get_error_details(serializer)
                 return VerifyOTPMutation(
-                    message='Validation error',
-                    status=400,
+                    message=error_details[0]['message'],
+                    status=500,
                 )
         except Exception as e:
             print(e)

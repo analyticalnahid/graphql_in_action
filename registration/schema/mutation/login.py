@@ -3,7 +3,8 @@ import secrets
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from ...serializers.login import UserLoginSerializer, UserForgetPasswordSerializer, UserResetPasswordSerializer
-from base.helper import send_passwordrest_email
+from base.helper.mail_otp import send_passwordrest_email
+from base.helper.validation import get_error_details
 from django.contrib.auth import authenticate
 from graphql_jwt.shortcuts import get_token
 
@@ -36,7 +37,7 @@ class UserLoginMutation(graphene.Mutation):
                 if user is not None:
                     token = get_token(user)
                     return UserLoginMutation(
-                        message='Login Successful',
+                        meagsse='Login Successful',
                         status=200,
                         token=token
                     )
@@ -47,10 +48,11 @@ class UserLoginMutation(graphene.Mutation):
                         token=None
                     )
             else:
+                error_details = get_error_details(serializer)
                 return UserLoginMutation(
-                    message='Validation Error',
-                    status=400,
-                    token=None
+                    message=error_details[0]['message'],
+                    status=500,
+                    token=None,
                 )
         except Exception as e:
             print(e)
@@ -107,9 +109,10 @@ class UserForgetPasswordMutation(graphene.Mutation):
                         status=404
                     )
             else:
+                error_details = get_error_details(serializer)
                 return UserForgetPasswordMutation(
-                    message='Validation Error',
-                    status=400
+                    message=error_details[0]['message'],
+                    status=500,
                 )
         except Exception as e:
             print(e)
@@ -161,11 +164,11 @@ class UserResetPasswordMutation(graphene.Mutation):
                     )
 
             else:
+                error_details = get_error_details(serializer)
                 return UserForgetPasswordMutation(
-                    message='Validation Error',
-                    status=400
+                    message=error_details[0]['message'],
+                    status=500,
                 )
-
         except Exception as e:
             print(e)
             return UserResetPasswordMutation(

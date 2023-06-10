@@ -9,7 +9,7 @@ query GetAllUsers {
 }
 
 query GetSingleUser {
-  user(id: 1) {
+  user(id: 6) {
     id
     email
     isVerified
@@ -18,7 +18,7 @@ query GetSingleUser {
 
 mutation RegisterUser {
   registerUser(
-    inputData: {email: "uwohpckni@internetkeno.com", password: "nahid123@"}
+    inputData: {email: "tlbokvyxmkinter@nkeno.com", password: "nahid1"}
   ) {
     user {
       id
@@ -30,7 +30,7 @@ mutation RegisterUser {
 }
 
 mutation VerifyAccount {
-  verifyOtp(inputData: {email: "uwohpckni@internetkeno.com", otp: "374666"}) {
+  verifyOtp(inputData: {email: "uwohpckniinternetkeno.com", otp: "374666"}) {
     status
     message
   }
@@ -38,7 +38,7 @@ mutation VerifyAccount {
 
 mutation LoginUser {
   loginUser(
-    inputData: {email: "uwohpckni@internetkeno.com", password: "nahid123"}
+    inputData: {email: "uwohpckniinternetkeno.com", password: "nahid13"}
   ) {
     token
     status
@@ -47,7 +47,7 @@ mutation LoginUser {
 }
 
 mutation ForgetPassword {
-  forgetPass(inputData: {email: "programsurface@gmail.com"}) {
+  forgetPass(inputData: {email: "uwohpckniinternetkeno.com"}) {
     status
     message
   }
@@ -55,7 +55,7 @@ mutation ForgetPassword {
 
 mutation ResetPassword {
   resetPass(
-    inputData: {token: "79b35297a9185314bd2827d33aca0add", newPassword: "program123@"}
+    inputData: {token: "79b35297a9185314bd2827d33aca0add", newPassword: "progr3@"}
   ) {
     status
     message
@@ -64,15 +64,22 @@ mutation ResetPassword {
 
 mutation UpdatePassword {
   changePassword(
-    inputData: {currentPassword: "program123@#", newPassword: "nahid123@"}
+    inputData: {currentPassword: "nahid123@", newPassword: "nahid"}
   ) {
     status
     message
   }
 }
 
+mutation UpdateAccountDetails {
+  accountUpdate(inputData: {firstName: "Yousuf", lastName: "Hossian"}) {
+    status
+    message
+  }
+}
+
 mutation RemoveUser {
-  deleteUser(inputData: {password:"nahid123@"}){
+  deleteUser(inputData: {password: "nahid1"}) {
     status
     message
   }

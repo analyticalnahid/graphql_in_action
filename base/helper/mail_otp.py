@@ -3,7 +3,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from registration.models import User
 
-
 def generate_otp():
     totp = pyotp.TOTP(pyotp.random_base32(), digits=6)
     return totp.now()
@@ -49,3 +48,5 @@ def send_passwordrest_email(email, reset_link):
         [email],
         fail_silently=False,
     )
+
+        

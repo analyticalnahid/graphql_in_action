@@ -2,7 +2,7 @@ import graphene
 from django.contrib.auth import get_user_model
 from graphql import GraphQLError
 from ...serializers.profile import ChangePasswordSerializer, AccountUpdateSerializer, AccountDeletionSerializer
-
+from base.helper.validation import get_error_details
 
 User = get_user_model()
 
@@ -41,11 +41,11 @@ class ChangePasswordMutation(graphene.Mutation):
                     status=200
                 )
             else:
+                error_details = get_error_details(serializer)
                 return ChangePasswordMutation(
-                    message='Validation Error',
-                    status=400
+                    message=error_details[0]['message'],
+                    status=500,
                 )
-
         except Exception as e:
             print(e)
             return ChangePasswordMutation(
@@ -110,8 +110,11 @@ class AccountDeletionMutation(graphene.Mutation):
                 user.delete()
                 return AccountDeletionMutation(message='Account deleted successfully.', status=200)
             else:
-                return AccountDeletionMutation(message='Validation Error',
-                                               status=400)
+                error_details = get_error_details(serializer)
+                return AccountDeletionMutation(
+                    message=error_details[0]['message'],
+                    status=500,
+                )
         except Exception as e:
             print(e)
             return AccountDeletionMutation(
