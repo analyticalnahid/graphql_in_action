@@ -1,0 +1,24 @@
+mutation UpdatePassword {
+  changePassword(
+    inputData: {currentPassword: "nahid123@", newPassword: "nahid"}
+  ) {
+    status
+    message
+  }
+}
+
+mutation UpdateAccountDetails {
+  accountUpdate(inputData: {firstName: "Yousuf", lastName: "Hossian"}) {
+    status
+    message
+  }
+}
+
+
+mutation RemoveUser {
+  deleteUser(inputData: {password: "nahid1"}) {
+    status
+    message
+  }
+}
+

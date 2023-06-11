@@ -6,7 +6,6 @@ from graphql import GraphQLError
 
 User = get_user_model()
 
-
 class UserType(DjangoObjectType):
     """
     Type definition for a single user.

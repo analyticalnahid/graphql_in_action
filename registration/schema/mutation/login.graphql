@@ -1,0 +1,27 @@
+mutation LoginUser {
+  loginUser(
+    inputData: {email: "uwohpckniinternetkeno.com", password: "nahid13"}
+  ) {
+    token
+    status
+    message
+  }
+}
+
+
+mutation ForgetPassword {
+  forgetPass(inputData: {email: "uwohpckniinternetkeno.com"}) {
+    status
+    message
+  }
+}
+
+
+mutation ResetPassword {
+  resetPass(
+    inputData: {token: "79b35297a9185314bd2827d33aca0add", newPassword: "progr3@"}
+  ) {
+    status
+    message
+  }
+}

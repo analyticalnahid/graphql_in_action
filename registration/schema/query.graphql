@@ -1,0 +1,20 @@
+query GetAllUsers {
+    allUsers {
+      id
+      email
+      firstName
+      lastName
+      isVerified
+    }
+  }
+
+
+query GetSingleUser {
+  user(id: 16) {
+    id
+    email
+    firstName
+    lastName
+    isVerified
+  }
+}
