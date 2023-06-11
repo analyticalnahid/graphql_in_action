@@ -12,17 +12,20 @@ User = get_user_model()
 
 
 class UserLoginInput(graphene.InputObjectType):
-    email = graphene.String(required=True)
-    password = graphene.String(required=True)
+    email = graphene.String(
+        required=True, description="The email address of the user")
+    password = graphene.String(
+        required=True, description="The password of the user")
 
 
 class UserLoginMutation(graphene.Mutation):
     class Arguments:
-        input_data = UserLoginInput(required=True)
+        input_data = UserLoginInput(
+            required=True, description="Input data for user login")
 
-    message = graphene.String()
-    status = graphene.Int()
-    token = graphene.String()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
+    token = graphene.String(description="JWT token for the user")
 
     @staticmethod
     def mutate(root, info, input_data):
@@ -64,15 +67,17 @@ class UserLoginMutation(graphene.Mutation):
 
 
 class UserForgetPasswordInput(graphene.InputObjectType):
-    email = graphene.String(required=True)
+    email = graphene.String(
+        required=True, description="The email address of the user")
 
 
 class UserForgetPasswordMutation(graphene.Mutation):
     class Arguments:
-        input_data = UserForgetPasswordInput(required=True)
+        input_data = UserForgetPasswordInput(
+            required=True, description="Input data for user forget password")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(root, info, input_data):
@@ -126,16 +131,19 @@ class UserForgetPasswordMutation(graphene.Mutation):
 
 
 class UserResetPasswordInput(graphene.InputObjectType):
-    token = graphene.String(required=True)
-    new_password = graphene.String(required=True)
+    token = graphene.String(
+        required=True, description="The token for reset password")
+    new_password = graphene.String(
+        required=True, description="The new password for the user")
 
 
 class UserResetPasswordMutation(graphene.Mutation):
     class Arguments:
-        input_data = UserResetPasswordInput(required=True)
+        input_data = UserResetPasswordInput(
+            required=True, description="Input data for user reset password")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(self, info, input_data):

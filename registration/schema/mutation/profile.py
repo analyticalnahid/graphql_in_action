@@ -7,18 +7,20 @@ from base.helper.validation import get_error_details
 User = get_user_model()
 
 
-
 class ChangePasswordInput(graphene.InputObjectType):
-    current_password = graphene.String(required=True)
-    new_password = graphene.String(required=True)
+    current_password = graphene.String(
+        required=True, description="The current password of the user")
+    new_password = graphene.String(
+        required=True, description="The new password of the user")
 
 
 class ChangePasswordMutation(graphene.Mutation):
     class Arguments:
-        input_data = ChangePasswordInput(required=True)
+        input_data = ChangePasswordInput(
+            required=True, description="Input data for changing password")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(self, info, input_data):
@@ -55,16 +57,19 @@ class ChangePasswordMutation(graphene.Mutation):
 
 
 class AccountUpdateInput(graphene.InputObjectType):
-    first_name = graphene.String(required=False)
-    last_name = graphene.String(required=False)
+    first_name = graphene.String(
+        required=False, description="The first name of the user")
+    last_name = graphene.String(
+        required=False, description="The last name of the user")
 
 
 class AccountUpdateMutation(graphene.Mutation):
     class Arguments:
-        input_data = AccountUpdateInput(required=False)
+        input_data = AccountUpdateInput(
+            required=False, description="Input data for updating account")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(self, info, input_data):
@@ -85,15 +90,17 @@ class AccountUpdateMutation(graphene.Mutation):
 
 
 class AccountDeletionInput(graphene.InputObjectType):
-    password = graphene.String(required=True)
+    password = graphene.String(
+        required=True, description="The password of the user")
 
 
 class AccountDeletionMutation(graphene.Mutation):
     class Arguments:
-        input_data = AccountDeletionInput(required=True)
+        input_data = AccountDeletionInput(
+            required=True, description="Input data for deleting account")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(self, info, input_data):
@@ -121,5 +128,3 @@ class AccountDeletionMutation(graphene.Mutation):
                 message=str(e),
                 status=500
             )
-
-

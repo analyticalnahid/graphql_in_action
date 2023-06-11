@@ -133,6 +133,11 @@ GRAPHENE = {
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
+    
+    # The command (manage.py graphql_schema)
+    
+    # 'SCHEMA_OUTPUT': 'data/schema.json',  # defaults to schema.json,
+    # 'SCHEMA_INDENT': 2,  # Defaults to None (displays all data on a single line)
 }
 
 

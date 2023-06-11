@@ -1,7 +1,6 @@
 import graphene
 from django.contrib.auth import get_user_model
 from ..query import UserType
-from graphql import GraphQLError
 from ...serializers.registration import UserRegistrationSerializer, VerifyAccountSerializer
 from base.helper.mail_otp import send_otp_via_email, generate_otp
 from base.helper.validation import get_error_details
@@ -10,17 +9,21 @@ User = get_user_model()
 
 
 class UserRegistrationInput(graphene.InputObjectType):
-    email = graphene.String(required=True)
-    password = graphene.String(required=True)
+    email = graphene.String(
+        required=True, description="The email address of the user")
+    password = graphene.String(
+        required=True, description="The password of the user")
 
 
 class UserRegistrationMutation(graphene.Mutation):
     class Arguments:
-        input_data = UserRegistrationInput(required=True)
+        input_data = UserRegistrationInput(
+            required=True, description="Input data for user registration")
 
-    message = graphene.String()
-    status = graphene.Int()
-    user = graphene.Field(lambda: UserType)
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
+    user = graphene.Field(
+        lambda: UserType, description="User object for the registered user")
 
     @staticmethod
     def mutate(root, info, input_data):
@@ -64,16 +67,16 @@ class UserRegistrationMutation(graphene.Mutation):
 
 
 class VerifyAccountInput(graphene.InputObjectType):
-    email = graphene.String(required=True)
-    otp = graphene.String(required=True)
+    email = graphene.String(required=True, description="The email address of the user")
+    otp = graphene.String(required=True, description="The OTP sent to the user")
 
 
 class VerifyOTPMutation(graphene.Mutation):
     class Arguments:
-        input_data = VerifyAccountInput(required=True)
+        input_data = VerifyAccountInput(required=True, description="Input data for OTP verification")
 
-    message = graphene.String()
-    status = graphene.Int()
+    message = graphene.String(description="Message for the user")
+    status = graphene.Int(description="Status code for the response")
 
     @staticmethod
     def mutate(root, info, input_data):

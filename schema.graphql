@@ -1,0 +1,104 @@
+type Query {
+  allUsers: [UserType]
+  user(id: Int): UserType
+}
+
+""" Type definition for a single user """
+type UserType {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  isVerified: Boolean!
+}
+
+type Mutation {
+  registerUser(inputData: UserRegistrationInput!): UserRegistrationMutation
+  verifyOtp(inputData: VerifyAccountInput!): VerifyOTPMutation
+  loginUser(inputData: UserLoginInput!): UserLoginMutation
+  forgetPass(inputData: UserForgetPasswordInput!): UserForgetPasswordMutation
+  resetPass(inputData: UserResetPasswordInput!): UserResetPasswordMutation
+  changePassword(inputData: ChangePasswordInput!): ChangePasswordMutation
+  accountUpdate(inputData: AccountUpdateInput): AccountUpdateMutation
+  deleteUser(inputData: AccountDeletionInput!): AccountDeletionMutation
+}
+
+type UserRegistrationMutation {
+  message: String
+  status: Int
+  user: UserType
+}
+
+input UserRegistrationInput {
+  email: String!
+  password: String!
+}
+
+type VerifyOTPMutation {
+  message: String
+  status: Int
+}
+
+input VerifyAccountInput {
+  email: String!
+  otp: String!
+}
+
+type UserLoginMutation {
+  message: String
+  status: Int
+  token: String
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
+}
+
+type UserForgetPasswordMutation {
+  message: String
+  status: Int
+}
+
+input UserForgetPasswordInput {
+  email: String!
+}
+
+type UserResetPasswordMutation {
+  message: String
+  status: Int
+}
+
+input UserResetPasswordInput {
+  token: String!
+  newPassword: String!
+}
+
+type ChangePasswordMutation {
+  message: String
+  status: Int
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+type AccountUpdateMutation {
+  message: String
+  status: Int
+}
+
+input AccountUpdateInput {
+  firstName: String
+  lastName: String
+}
+
+type AccountDeletionMutation {
+  message: String
+  status: Int
+}
+
+input AccountDeletionInput {
+  password: String!
+}
